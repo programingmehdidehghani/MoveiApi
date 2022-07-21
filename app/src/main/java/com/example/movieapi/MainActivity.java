@@ -1,6 +1,8 @@
 package com.example.movieapi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import com.example.movieapi.Utils.Credentials;
 import com.example.movieapi.Utils.MovieApi;
 import com.example.movieapi.request.Servicey;
 import com.example.movieapi.response.MovieSearchResponse;
+import com.example.movieapi.viewModel.MovieListViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,16 +27,27 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     Button button;
+    public MovieListViewModel movieListViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button = findViewById(R.id.main_avtivity_btn);
 
+        movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GetRetrofitResponse();
+            }
+        });
+    }
+
+    private void ObserveAnyChange(){
+        movieListViewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(List<MovieModel> movieModels) {
+
             }
         });
     }
